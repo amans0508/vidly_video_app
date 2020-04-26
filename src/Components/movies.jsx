@@ -9,7 +9,7 @@ class Movies extends Component {
   deleteMovies(movie) {
     //console.log("The movie is :" + movie._id);
     const deletedMovie = this.state.movies.filter((i) => i._id !== movie._id);
-    this.setState(deletedMovie);
+    this.setState({ movies: deletedMovie });
   }
 
   render() {
