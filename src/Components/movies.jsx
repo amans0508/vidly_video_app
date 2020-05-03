@@ -3,6 +3,7 @@ import { getMovies } from "../Starter Code/Starter Code/services/fakeMovieServic
 import Like from "./common/like";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
+import PropTypes from "prop-types";
 
 class Movies extends Component {
   state = {
@@ -83,5 +84,8 @@ class Movies extends Component {
     );
   }
 }
+Pagination.propTypes = {
+  props: PropTypes.number,
+};
 
 export default Movies;
