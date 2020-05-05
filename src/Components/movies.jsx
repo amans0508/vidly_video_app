@@ -43,14 +43,7 @@ class Movies extends Component {
     this.setState({ currentPage: page });
   };
 
-  handleSort = (path) => {
-    console.log(path);
-    const sortColumn = [...this.state.sortColumn];
-    if (sortColumn.path === path)
-      sortColumn.order(sortColumn.order === "asc") ? "desc" : "asc";
-    else {
-      (sortColumn.path = path), (sortColumn.order = "asc");
-    }
+  handleSort = (sortColumn) => {
     this.setState({ sortColumn });
   };
 
@@ -61,6 +54,7 @@ class Movies extends Component {
       pageSize,
       currentPage,
       selectedGenre,
+      sortColumn,
     } = this.state;
     if (count === 0) return <p>There are no movies in the database</p>;
     const filtered =
@@ -87,10 +81,11 @@ class Movies extends Component {
         <div className="col">
           <p>Showing {filtered.length} movies in the database</p>
           <MoviesTable
-            onSort={this.handleSort}
+            sortColumn={sortColumn}
             movies={movies}
             onLike={this.handleLike}
             onDelete={this.handleDelete}
+            onSort={this.handleSort}
           ></MoviesTable>
           <Pagination
             itemsCount={filtered.length}
