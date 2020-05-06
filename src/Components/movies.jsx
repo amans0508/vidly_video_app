@@ -47,16 +47,14 @@ class Movies extends Component {
     this.setState({ sortColumn });
   };
 
-  render() {
-    const { length: count } = this.state.movies;
+  getPagedData = () => {
     const {
-      movies: allMovies,
       pageSize,
       currentPage,
       selectedGenre,
-      sortColumn,
+      movies: allMovies,
     } = this.state;
-    if (count === 0) return <p>There are no movies in the database</p>;
+
     const filtered =
       selectedGenre && selectedGenre._id
         ? allMovies.filter((m) => m.genre._id === selectedGenre._id)
@@ -69,6 +67,16 @@ class Movies extends Component {
     );
 
     const movies = paginate(sorted, currentPage, pageSize);
+
+    return { totalCount: filtered.legth, data: movies };
+  };
+
+  render() {
+    const { length: count } = this.state.movies;
+    const { pageSize, currentPage, sortColumn } = this.state;
+    if (count === 0) return <p>There are no movies in the database</p>;
+    const { totalCount, data: movies } = this.getPagedData();
+
     return (
       <div className="row">
         <div className="col-3">
@@ -79,7 +87,7 @@ class Movies extends Component {
           ></ListGroup>
         </div>
         <div className="col">
-          <p>Showing {filtered.length} movies in the database</p>
+          <p>Showing {totalCount} movies in the database</p>
           <MoviesTable
             sortColumn={sortColumn}
             movies={movies}
@@ -88,7 +96,7 @@ class Movies extends Component {
             onSort={this.handleSort}
           ></MoviesTable>
           <Pagination
-            itemsCount={filtered.length}
+            itemsCount={totalCount}
             pageSize={pageSize}
             onPageChange={this.handlePageChange}
             currentPage={currentPage}
@@ -99,7 +107,7 @@ class Movies extends Component {
   }
 }
 Pagination.propTypes = {
-  itemsCount: PropTypes.number.isRequired,
+  itemsCount: PropTypes.number,
   pageSize: PropTypes.number.isRequired,
   onPageChange: PropTypes.func.isRequired,
   currentPage: PropTypes.number.isRequired,
